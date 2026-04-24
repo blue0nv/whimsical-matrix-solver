@@ -4,7 +4,7 @@ def matrix_generator(entries):
         row = []
         for j in range(4):
             num = entries[i][j].get().strip()
-            if num_validator(num):
+            if (num_validator(num)):
                 row.append(float(num))
             else:
                 return None
@@ -20,59 +20,61 @@ def num_validator(num):
         return False
 
 
-#GAUSS ELIMINATION
 def gauss(matrix):
-    if matrix is None:
+    if matrix == None:
         return None
-
     n = 3
-
     for i in range(n):
         if matrix[i][i] == 0:
             return None
-
         for j in range(i + 1, n):
             factor = matrix[j][i] / matrix[i][i]
             for k in range(i, n + 1):
                 matrix[j][k] -= factor * matrix[i][k]
-
     x = [0, 0, 0]
-
     for i in range(n - 1, -1, -1):
         if matrix[i][i] == 0:
             return None
-
         x[i] = matrix[i][n]
         for j in range(i + 1, n):
             x[i] -= matrix[i][j] * x[j]
-
         x[i] /= matrix[i][i]
-
     return x
 
-
-#GAUSS-JORDAN ELIMINATION
-def gauss_jordan(matrix):
-    if matrix is None:
+def cramer(matrix):
+    if matrix == None:
         return None
 
-    n = 3
+    detA = (
+        matrix[0][0] * ((matrix[1][1] * matrix[2][2]) - (matrix[1][2] * matrix[2][1]))
+        - matrix[0][1] * ((matrix[1][0] * matrix[2][2]) - (matrix[1][2] * matrix[2][0]))
+        + matrix[0][2] * ((matrix[1][0] * matrix[2][1]) - (matrix[1][1] * matrix[2][0]))
+    )
 
-    for i in range(n):
-        if matrix[i][i] == 0:
-            return None
+    if detA == 0:
+        return None
 
-        pivot = matrix[i][i]
+    detA1 = (
+        matrix[0][3] * ((matrix[1][1] * matrix[2][2]) - (matrix[1][2] * matrix[2][1]))
+        - matrix[0][1] * ((matrix[1][3] * matrix[2][2]) - (matrix[1][2] * matrix[2][3]))
+        + matrix[0][2] * ((matrix[1][3] * matrix[2][1]) - (matrix[1][1] * matrix[2][3]))
+    )
 
-        # Normalize row
-        for j in range(n + 1):
-            matrix[i][j] /= pivot
+    detA2 = (
+        matrix[0][0] * ((matrix[1][3] * matrix[2][2]) - (matrix[1][2] * matrix[2][3]))
+        - matrix[0][3] * ((matrix[1][0] * matrix[2][2]) - (matrix[1][2] * matrix[2][0]))
+        + matrix[0][2] * ((matrix[1][0] * matrix[2][3]) - (matrix[1][3] * matrix[2][0]))
+    )
 
-        # Eliminate all other rows
-        for k in range(n):
-            if k != i:
-                factor = matrix[k][i]
-                for j in range(n + 1):
-                    matrix[k][j] -= factor * matrix[i][j]
+    detA3 = (
+        matrix[0][0] * ((matrix[1][1] * matrix[2][3]) - (matrix[1][3] * matrix[2][1]))
+        - matrix[0][1] * ((matrix[1][0] * matrix[2][3]) - (matrix[1][3] * matrix[2][0]))
+        + matrix[0][3] * ((matrix[1][0] * matrix[2][1]) - (matrix[1][1] * matrix[2][0]))
+    )
 
-    return [matrix[i][n] for i in range(n)]
+    x1 = detA1 / detA
+    x2 = detA2 / detA
+    x3 = detA3 / detA
+
+    x = [x1, x2, x3]
+    return x
