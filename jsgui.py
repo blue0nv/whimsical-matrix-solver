@@ -26,10 +26,7 @@ def calculate():
 
         case "gje":
             result = functions.gauss_jordan(matrix)
-
-        case _:
-            result = None
-
+            
     if result is None:
         x1_var.set("")
         x2_var.set("")
