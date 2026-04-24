@@ -2,36 +2,50 @@ import tkinter as tk
 import functions
 
 root = tk.Tk()
-
 root.title("الاله الذكيه لحساب المصفوفه الشقيه")
 root.geometry("600x500")
+
 
 def hide_results():
     results_frame.pack_forget()
 
+
 def show_results():
     results_frame.pack()
 
+
 def calculate():
     m = method.get()
+
+    matrix = functions.matrix_generator(entries)
+
     match m:
+
         case "gauss":
-            matrix = functions.matrix_generator(entries)
             result = functions.gauss(matrix)
-            
-            if result == None:
-                x1_var.set("")
-                x2_var.set("")
-                x3_var.set("")
-                results.config(text="No Solution")
-                show_results()
-                return  
-            
-            results.config(text="Results")
-            x1_var.set(f"X1 = {result[0]}")
-            x2_var.set(f"X2 = {result[1]}")
-            x3_var.set(f"X3 = {result[2]}")
-            show_results()
+
+        case "gje":
+            result = functions.gauss_jordan(matrix)
+
+        case _:
+            result = None
+
+    if result is None:
+        x1_var.set("")
+        x2_var.set("")
+        x3_var.set("")
+        results.config(text="No Solution")
+        show_results()
+        return
+
+    results.config(text="Results")
+    x1_var.set(f"X1 = {result[0]}")
+    x2_var.set(f"X2 = {result[1]}")
+    x3_var.set(f"X3 = {result[2]}")
+    show_results()
+
+
+# ---------------- UI ----------------
 
 tk.Label(root, text="Enter Augmented Matrix (3x4)", font=("Arial", 14)).pack(pady=10)
 
@@ -71,11 +85,9 @@ results_frame = tk.Frame(root)
 
 results = tk.Label(results_frame, text="Results", font=("Arial", 12))
 results.pack()
-x1 = tk.Label(results_frame, textvariable=x1_var)
-x1.pack()
-x2 = tk.Label(results_frame, textvariable=x2_var)
-x2.pack()
-x3 = tk.Label(results_frame, textvariable=x3_var)
-x3.pack()
+
+tk.Label(results_frame, textvariable=x1_var).pack()
+tk.Label(results_frame, textvariable=x2_var).pack()
+tk.Label(results_frame, textvariable=x3_var).pack()
 
 root.mainloop()
