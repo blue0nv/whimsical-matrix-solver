@@ -55,7 +55,7 @@ def calculate():
             matrix = functions.matrix_generator(entries)
             result = functions.gauss_jordan(matrix)
 
-             if result == None:
+            if result == None:
                 x1_var.set("")
                 x2_var.set("")
                 x3_var.set("")
