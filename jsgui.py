@@ -32,11 +32,30 @@ def calculate():
             x2_var.set(f"X2 = {result[1]}")
             x3_var.set(f"X3 = {result[2]}")
             show_results()
+            
         case "cramer":
             matrix = functions.matrix_generator(entries)
             result = functions.cramer(matrix)
 
             if result == None:
+                x1_var.set("")
+                x2_var.set("")
+                x3_var.set("")
+                results.config(text="No Solution")
+                show_results()
+                return
+
+            results.config(text="Results")
+            x1_var.set(f"X1 = {result[0]}")
+            x2_var.set(f"X2 = {result[1]}")
+            x3_var.set(f"X3 = {result[2]}")
+            show_results()
+            
+        case "gje":
+            matrix = functions.matrix_generator(entries)
+            result = functions.gauss_jordan(matrix)
+
+             if result == None:
                 x1_var.set("")
                 x2_var.set("")
                 x3_var.set("")
