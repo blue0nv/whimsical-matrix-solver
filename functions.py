@@ -102,4 +102,4 @@ def gauss_jordan(matrix):
                 for j in range(n + 1):
                     matrix[k][j] -= factor * matrix[i][j]
 
-    return [matrix[i][n] for i in range(n)]
+return [matrix[i][n] for i in range(n)]
