@@ -43,6 +43,7 @@ def gauss(matrix):
         x[i] /= matrix[i][i]
     return x
 
+
 def cramer(matrix):
     if matrix == None:
         return None
@@ -81,6 +82,7 @@ def cramer(matrix):
     x = [x1, x2, x3]
     return x
 
+
 def gauss_jordan(matrix):
     if matrix is None:
         return None
@@ -103,3 +105,42 @@ def gauss_jordan(matrix):
                     matrix[k][j] -= factor * matrix[i][j]
 
     return [matrix[i][n] for i in range(n)]
+
+
+def lu(matrix):
+    if matrix is None:
+        return None
+    n = 3
+    A = [row[:3] for row in matrix]
+    b = [row[3] for row in matrix]
+    L = [[0]*n for _ in range(n)]
+    U = [[0]*n for _ in range(n)]
+    for i in range(n):
+        for k in range(i, n):
+            U[i][k] = A[i][k]
+            for j in range(i):
+                U[i][k] -= L[i][j] * U[j][k]
+        for k in range(i, n):
+            if i == k:
+                L[i][i] = 1
+            else:
+                if U[i][i] == 0:
+                    return None
+                L[k][i] = A[k][i]
+                for j in range(i):
+                    L[k][i] -= L[k][j] * U[j][i]
+                L[k][i] /= U[i][i]
+    y = [0]*n
+    for i in range(n):
+        y[i] = b[i]
+        for j in range(i):
+            y[i] -= L[i][j] * y[j]
+    x = [0]*n
+    for i in range(n-1, -1, -1):
+        x[i] = y[i]
+        for j in range(i+1, n):
+            x[i] -= U[i][j] * x[j]
+        if U[i][i] == 0:
+            return None
+        x[i] /= U[i][i]
+    return x
