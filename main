@@ -1,0 +1,6 @@
+import jsgui
+
+def main():
+    jsgui.run()
+
+main()
